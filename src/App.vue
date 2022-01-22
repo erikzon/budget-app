@@ -1,21 +1,18 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import BudgetCard from './components/BudgetCard.vue'
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <header class="container mx-auto p-5 flex justify-between align-baseline gap-3">
+      <h1 class="text-6xl grow">Budgets</h1>
+      <button class="button primary">Add Budget</button>
+      <button class="button">Add Expense</button>
+  </header>
+  <main class="grid grid-cols-2 gap-2 items-start p-4">
+    <BudgetCard name="Entertainment" amount=100 max=300 />
+  </main>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
