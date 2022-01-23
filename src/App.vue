@@ -9,7 +9,7 @@ import BudgetCard from './components/BudgetCard.vue'
       <button class="button">Add Expense</button>
   </header>
   <main class="grid grid-cols-2 gap-2 items-start p-4">
-    <BudgetCard name="Entertainment" amount=100 max=300 />
+    <BudgetCard name="Entertainment" :amount="100" :max="1000" :grey="false" />
   </main>
 </template>
 

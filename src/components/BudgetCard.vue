@@ -4,14 +4,35 @@ import { currencyFormatter } from "../utils";
 defineProps({
     name: String,
     amount: Number,
-    max: Number
+    max: Number,
+    grey: Boolean
 })
+
+function status(amount, max) {
+    const ratio = amount / max;
+    if (ratio < 0.5) {
+        return "default"
+    }
+    if (ratio < 0.75) {
+        return "warning"
+    }
+    return "danger"
+}
+
+function cardBackground(amount, max, grey) {
+    if (amount >= max) {
+        return "red_background"
+    }
+    if (grey) {
+        return "grey_background"
+    }
+}
 </script>
 
 <template>
     <section
-        class="p-8 border-slate-500 border-2 flex rounded-md
-        justify-between align-baseline font-normal mb-3 flex-wrap"
+        class="p-8 border-slate-500 border-2 flex rounded-md justify-between align-baseline font-normal mb-3 flex-wrap"
+        :class="[cardBackground(amount, max, grey)]"
     >
         <h2>{{ name }}</h2>
         <h3>
@@ -20,17 +41,46 @@ defineProps({
                 class="text-slate-500 text-2xl"
             >{{ currencyFormatter.format(max) }}</span>
         </h3>
-        <progress :value="amount" :max="max" class="basis-full"></progress>
+        <progress
+            :id="name"
+            :value="amount"
+            :max="max"
+            class="basis-full"
+            :class="[status(amount, max)]"
+        ></progress>
+        <div class="flex gap-4 items-end ml-auto">
+            <button class="button">Add Expense</button>
+            <button class="button secondary">View Expenses</button>
+        </div>
     </section>
 </template>
 
 <style scoped>
-progress::-webkit-progress-bar { 
-    @apply bg-slate-300 rounded-2xl h-6 mb-2
+progress{
+    @apply my-6 h-6
 }
 
-progress::-webkit-progress-value { 
-    @apply bg-blue-600 rounded-2xl
+progress::-webkit-progress-bar {
+    @apply bg-slate-300 rounded-2xl;
+}
+
+.default::-webkit-progress-value {
+    @apply bg-blue-600 rounded-2xl;
+}
+
+.warning::-webkit-progress-value {
+    @apply bg-yellow-600 rounded-2xl;
+}
+
+.danger::-webkit-progress-value {
+    @apply bg-red-600 rounded-2xl;
+}
+
+.grey_background {
+    @apply bg-slate-100;
+}
+.red_background {
+    @apply bg-red-200;
 }
 
 h2 {

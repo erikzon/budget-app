@@ -3,10 +3,14 @@
 @tailwind utilities;
 
 .button{
-    @apply w-36 p-3 border-2 border-blue-600 bg-white text-blue-600
+    @apply w-40 p-3 border-2 text-xl border-blue-600 bg-white text-blue-600
       rounded-md hover:bg-blue-600 hover:text-white;
 }
 
 .primary {
     @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.secondary {
+    @apply border-slate-600 text-slate-600 hover:bg-slate-600;
 }
