@@ -7,7 +7,7 @@ const {addBudget} = useBudgets()
 const emit = defineEmits(['closeModal'])
 
 const name = ref("")
-const max = ref("")
+const max = ref(0)
 
 function handleSubmit() {
     addBudget({name: name.value,max: max.value})
@@ -26,11 +26,11 @@ function handleSubmit() {
             </header>
             <div>
                 <label>
-                    Name:
+                    Name
                     <input type="text" required v-model="name"/>
                 </label>
                 <label>
-                    Maximum Spending:
+                    Maximum Spending
                     <input type="number" step="1" required v-model="max"/>
                 </label>
                 <button class="button primary" type="submit">Add</button>

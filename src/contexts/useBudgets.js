@@ -4,7 +4,8 @@ import { v4 as uuidV4 } from 'uuid'
 const useBudgets = () => {
     const BUDGETS_KEY = "budgets-erick_oliva"
     const EXPENSES_KEY = "expenses-erick_oliva"
-
+    const UNCATEGORIZED_BUDGET_ID = "Uncategorized"
+    
     const budgets = ref([])
     const expenses = ref([])
 

@@ -1,23 +1,32 @@
 <script setup>
 import BudgetCard from './components/BudgetCard.vue'
 import AddBudgetModal from './components/AddBudgetModal.vue';
+import AddExpensesModal from './components/AddExpensesModal.vue';
 import useBudgets from "./contexts/useBudgets";
 import { ref } from 'vue';
 
 const {budgets} = useBudgets()
 
-const showBudgetModal = ref(true);
+const showBudgetModal = ref(false);
+const showExpensesModal = ref(true);
 function toggleBudgetModal() {
   showBudgetModal.value = !showBudgetModal.value;
+}
+
+function toggleExpensesModal() {
+  showExpensesModal.value = !showExpensesModal.value;
 }
 </script>
 
 <template>
   <header class="container mx-auto p-5 flex justify-between align-baseline gap-3">
     <h1 class="text-6xl grow">Budgets</h1>
-    <button class="button primary" @click="toggleBudgetModal
-    ">Add Budget</button>
-    <button class="button">Add Expense</button>
+    <button class="button primary" @click="toggleBudgetModal">
+      Add Budget
+    </button>
+    <button class="button" @click="toggleExpensesModal">
+      Add Expense
+    </button>
   </header>
   <main class="grid grid-cols-2 gap-2 items-start p-4">
     <div v-for="budget in budgets" :key="budgets.id">
@@ -26,6 +35,7 @@ function toggleBudgetModal() {
     <!-- <BudgetCard name="Entertainment" :amount="200" :max="1000" :grey="false" /> -->
   </main>
   <AddBudgetModal v-show="showBudgetModal" v-on:closeModal="toggleBudgetModal" />
+  <AddExpensesModal v-show="showExpensesModal" v-on:closeModal="toggleExpensesModal" defaultBudgetId="prueba2"/>
 </template>
 
 <style>
