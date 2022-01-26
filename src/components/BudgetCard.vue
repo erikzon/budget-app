@@ -8,6 +8,12 @@ defineProps({
     grey: Boolean
 })
 
+const emit = defineEmits(['toggleExpensesModal'])
+
+function handleAddExpense() {
+    emit('toggleExpensesModal')
+}
+
 function status(amount, max) {
     const ratio = amount / max;
     if (ratio < 0.5) {
@@ -49,7 +55,7 @@ function cardBackground(amount, max, grey) {
             :class="[status(amount, max)]"
         ></progress>
         <div class="flex gap-4 items-end ml-auto">
-            <button class="button">Add Expense</button>
+            <button class="button" @click="handleAddExpense">Add Expense</button>
             <button class="button secondary">View Expenses</button>
         </div>
     </section>

@@ -15,6 +15,7 @@ const budgetId = ref("")
 
 function handleSubmit() {
     addExpense({ description: description.value, amount: amount.value, budgetId: budgetId.value })
+    console.log(budgetId.value);
     description.value = ""
     amount.value = ""
     budgetId.value = ""
@@ -40,13 +41,15 @@ function handleSubmit() {
                 </label>
                 <label>
                     Budget
-                    <select required v-model="budgetId">
-                        <option :id="UNCATEGORIZED_BUDGET_ID" selected="selected">Uncategorized</option>
+                    <select required v-model="budgetId" :id="UNCATEGORIZED_BUDGET_ID" >
+                        <option :id="UNCATEGORIZED_BUDGET_ID" 
+                        :value="UNCATEGORIZED_BUDGET_ID" 
+                        selected>Uncategorized</option>
                         <option
                             v-for="budget in budgets"
                             :key="budget"
-                            :id="budget.budgetId"
-                            :value="budget.budgetId"
+                            :id="budget.id"
+                            :value="budget.id"
                         >{{ budget.name }}</option>
                     </select>
                 </label>
@@ -68,5 +71,14 @@ h2 {
 
 input {
     @apply bg-slate-100 border-2;
+}
+
+select {
+    @apply border-2 border-slate-300 bg-slate-100
+    text-xl
+}
+
+option {
+    @apply text-base
 }
 </style>
