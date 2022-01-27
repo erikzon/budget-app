@@ -41,16 +41,22 @@ function handleSubmit() {
                 </label>
                 <label>
                     Budget
-                    <select required v-model="budgetId" :id="UNCATEGORIZED_BUDGET_ID" >
-                        <option :id="UNCATEGORIZED_BUDGET_ID" 
-                        :value="UNCATEGORIZED_BUDGET_ID" 
-                        selected>Uncategorized</option>
+                    <select required v-model="budgetId" :id="UNCATEGORIZED_BUDGET_ID">
+                        <option
+                            :id="UNCATEGORIZED_BUDGET_ID"
+                            :value="UNCATEGORIZED_BUDGET_ID"
+                            selected
+                        >
+                            Uncategorized
+                        </option>
                         <option
                             v-for="budget in budgets"
                             :key="budget"
                             :id="budget.id"
                             :value="budget.id"
-                        >{{ budget.name }}</option>
+                        >
+                            {{ budget.name }}
+                        </option>
                     </select>
                 </label>
                 <button class="button primary" type="submit">Add</button>
@@ -75,10 +81,10 @@ input {
 
 select {
     @apply border-2 border-slate-300 bg-slate-100
-    text-xl
+    text-xl;
 }
 
 option {
-    @apply text-base
+    @apply text-base;
 }
 </style>

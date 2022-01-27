@@ -5,8 +5,9 @@ import AddExpensesModal from './components/AddExpensesModal.vue';
 import useBudgets from "./contexts/useBudgets";
 import { ref } from 'vue';
 
-const { budgets, getBudgetExpenses } = useBudgets()
+const { budgets, getBudgetExpenses, UNCATEGORIZED_BUDGET_ID } = useBudgets()
 
+const defaultID = ref(UNCATEGORIZED_BUDGET_ID);
 const showBudgetModal = ref(false);
 const showExpensesModal = ref(true);
 
@@ -44,7 +45,7 @@ function getBudgetExpensesFor(budgetId) {
   <AddExpensesModal
     v-show="showExpensesModal"
     v-on:closeModal="toggleExpensesModal"
-    defaultBudgetId="prueba2"
+    :defaultBudgetId="defaultID"
   />
 </template>
 
