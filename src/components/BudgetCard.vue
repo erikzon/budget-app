@@ -5,7 +5,8 @@ defineProps({
     name: String,
     amount: Number,
     max: Number,
-    grey: Boolean
+    grey: Boolean,
+    showButton: Boolean
 })
 
 const emit = defineEmits(['toggleExpensesModal'])
@@ -42,19 +43,21 @@ function cardBackground(amount, max, grey) {
     >
         <h2>{{ name }}</h2>
         <h3>
-            {{ currencyFormatter.format(amount) }} /
+            {{ currencyFormatter.format(amount) }} 
             <span
                 class="text-slate-500 text-2xl"
-            >{{ currencyFormatter.format(max) }}</span>
+                v-if="max"
+            > / {{ currencyFormatter.format(max) }}</span>
         </h3>
         <progress
+            v-if="max"
             :id="name"
             :value="amount"
             :max="max"
             class="basis-full"
             :class="[status(amount, max)]"
         ></progress>
-        <div class="flex gap-4 items-end ml-auto">
+        <div class="flex gap-4 items-end ml-auto" v-if="showButton">
             <button class="button" @click="handleAddExpense">Add Expense</button>
             <button class="button secondary">View Expenses</button>
         </div>

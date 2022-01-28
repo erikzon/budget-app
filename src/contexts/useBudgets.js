@@ -40,7 +40,7 @@ const useBudgets = () => {
         localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses.value))
     }
 
-    return { budgets, expenses, getBudgetExpenses, addExpense, addBudget, deleteBudget, deleteExpense }
+    return { budgets, expenses, UNCATEGORIZED_BUDGET_ID, getBudgetExpenses, addExpense, addBudget, deleteBudget, deleteExpense }
 }
 
 export default useBudgets

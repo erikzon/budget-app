@@ -5,7 +5,7 @@ import AddExpensesModal from './components/AddExpensesModal.vue';
 import useBudgets from "./contexts/useBudgets";
 import { ref } from 'vue';
 
-const { budgets, getBudgetExpenses, UNCATEGORIZED_BUDGET_ID } = useBudgets()
+const { budgets, expenses, getBudgetExpenses, UNCATEGORIZED_BUDGET_ID } = useBudgets()
 
 const defaultID = ref(UNCATEGORIZED_BUDGET_ID);
 const showBudgetModal = ref(false);
@@ -21,6 +21,14 @@ function toggleExpensesModal() {
 
 function getBudgetExpensesFor(budgetId) {
   return getBudgetExpenses(budgetId).reduce((total, expense) => total + expense.amount,0)
+}
+
+function maxAll() {
+  return budgets.value.reduce((total, budget) => total + budget.max, 0)
+}
+
+function amountAll() {
+  return expenses.value.reduce((total, expense) => total + expense.amount, 0)
 }
 </script>
 
@@ -38,7 +46,28 @@ function getBudgetExpensesFor(budgetId) {
       :amount="getBudgetExpensesFor(budget.id)"
       :max="budget.max"
       :grey="false"
+      :showButton="true"
       v-on:toggleExpensesModal="toggleExpensesModal"
+    />
+    <BudgetCard
+      v-if="getBudgetExpensesFor(UNCATEGORIZED_BUDGET_ID) > 0"
+      :key="UNCATEGORIZED_BUDGET_ID"
+      name="Uncategorized"
+      :amount="getBudgetExpensesFor(UNCATEGORIZED_BUDGET_ID)"
+      :grey="true"
+      :showButton="true"
+      v-on:toggleExpensesModal="toggleExpensesModal"
+    />
+    <BudgetCard
+      v-if="getBudgetExpensesFor(UNCATEGORIZED_BUDGET_ID) > 0"
+      :key="UNCATEGORIZED_BUDGET_ID"
+      name="Total"
+      :amount="amountAll()"
+      :max="maxAll()"
+      :grey="true"
+      :showButton="false"
+      v-on:toggleExpensesModal="toggleExpensesModal"
+      
     />
   </main>
   <AddBudgetModal v-show="showBudgetModal" v-on:closeModal="toggleBudgetModal" />
