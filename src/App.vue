@@ -1,15 +1,26 @@
 <script setup>
 import BudgetCard from './components/BudgetCard.vue'
-import AddBudgetModal from './components/AddBudgetModal.vue';
-import AddExpensesModal from './components/AddExpensesModal.vue';
-import useBudgets from "./contexts/useBudgets";
-import { ref } from 'vue';
+import AddBudgetModal from './components/AddBudgetModal.vue'
+import AddExpensesModal from './components/AddExpensesModal.vue'
+import useBudgets from "./contexts/useBudgets"
+import { onMounted, ref } from 'vue'
+import ViewExpensesModal from './components/ViewExpensesModal.vue'
 
 const { budgets, expenses, getBudgetExpenses, UNCATEGORIZED_BUDGET_ID } = useBudgets()
 
 const defaultID = ref(UNCATEGORIZED_BUDGET_ID);
-const showBudgetModal = ref(false);
-const showExpensesModal = ref(true);
+const showBudgetModal = ref(false)
+const showExpensesModal = ref(false)
+const showViewExpensesModal = ref(false)
+const selectedBudget = ref({ id: UNCATEGORIZED_BUDGET_ID, name: "Uncategorized", max: 0 })
+
+onMounted(() => {
+  //console.log(selectedBudget.value);
+})
+
+function BudgetSelection(budget) {
+  selectedBudget.value = budget
+}
 
 function toggleBudgetModal() {
   showBudgetModal.value = !showBudgetModal.value;
@@ -19,8 +30,17 @@ function toggleExpensesModal() {
   showExpensesModal.value = !showExpensesModal.value;
 }
 
+function toggleViewExpensesModal() {
+  showViewExpensesModal.value = !showViewExpensesModal.value;
+}
+
 function getBudgetExpensesFor(budgetId) {
   return getBudgetExpenses(budgetId).reduce((total, expense) => total + expense.amount,0)
+}
+
+function handleAddExpensesFromHeader() {
+  selectedBudget.value = { id: UNCATEGORIZED_BUDGET_ID, name: "Uncategorized", max: 0 }
+  toggleExpensesModal();
 }
 
 function maxAll() {
@@ -36,7 +56,7 @@ function amountAll() {
   <header class="container mx-auto p-5 flex justify-between align-baseline gap-3">
     <h1 class="text-6xl grow">Budgets</h1>
     <button class="button primary" @click="toggleBudgetModal">Add Budget</button>
-    <button class="button" @click="toggleExpensesModal">Add Expense</button>
+    <button class="button" @click="handleAddExpensesFromHeader">Add Expense</button>
   </header>
   <main class="grid grid-cols-2 gap-2 items-start p-4">
     <BudgetCard
@@ -48,6 +68,7 @@ function amountAll() {
       :grey="false"
       :showButton="true"
       v-on:toggleExpensesModal="toggleExpensesModal"
+      v-on:budgetSelection="BudgetSelection(budget)"
     />
     <BudgetCard
       v-if="getBudgetExpensesFor(UNCATEGORIZED_BUDGET_ID) > 0"
@@ -57,25 +78,25 @@ function amountAll() {
       :grey="true"
       :showButton="true"
       v-on:toggleExpensesModal="toggleExpensesModal"
+      v-on:budgetSelection="BudgetSelection(budget)"
     />
     <BudgetCard
       v-if="getBudgetExpensesFor(UNCATEGORIZED_BUDGET_ID) > 0"
-      :key="UNCATEGORIZED_BUDGET_ID"
+      :key="123"
       name="Total"
       :amount="amountAll()"
       :max="maxAll()"
       :grey="true"
       :showButton="false"
-      v-on:toggleExpensesModal="toggleExpensesModal"
-      
     />
   </main>
-  <AddBudgetModal v-show="showBudgetModal" v-on:closeModal="toggleBudgetModal" />
+  <AddBudgetModal v-if="showBudgetModal" v-on:closeModal="toggleBudgetModal" />
   <AddExpensesModal
     v-show="showExpensesModal"
     v-on:closeModal="toggleExpensesModal"
-    :defaultBudgetId="defaultID"
+    :defaultBudget="selectedBudget"
   />
+  <ViewExpensesModal v-if="showViewExpensesModal" v-on:closeModal="toggleViewExpensesModal" :selectedBudget="selectedBudget"/>
 </template>
 
 <style>

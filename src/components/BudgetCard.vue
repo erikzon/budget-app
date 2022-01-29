@@ -9,10 +9,15 @@ defineProps({
     showButton: Boolean
 })
 
-const emit = defineEmits(['toggleExpensesModal'])
+const emit = defineEmits(['toggleExpensesModal','budgetSelection'])
 
 function handleAddExpense() {
     emit('toggleExpensesModal')
+    emit('budgetSelection')
+}
+
+function handleViewExpenses() {
+    emit('budgetSelection')
 }
 
 function status(amount, max) {
@@ -59,7 +64,7 @@ function cardBackground(amount, max, grey) {
         ></progress>
         <div class="flex gap-4 items-end ml-auto" v-if="showButton">
             <button class="button" @click="handleAddExpense">Add Expense</button>
-            <button class="button secondary">View Expenses</button>
+            <button class="button secondary" @click="handleViewExpenses">View Expenses</button>
         </div>
     </section>
 </template>

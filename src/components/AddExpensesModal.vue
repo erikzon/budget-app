@@ -5,7 +5,7 @@ import useBudgets from "../contexts/useBudgets";
 const { addExpense, budgets, UNCATEGORIZED_BUDGET_ID } = useBudgets()
 
 const props = defineProps({
-    defaultBudgetId: String
+    defaultBudget: Object
 })
 const emit = defineEmits(['closeModal'])
 
@@ -15,11 +15,17 @@ const budgetId = ref("")
 
 function handleSubmit() {
     addExpense({ description: description.value, amount: amount.value, budgetId: budgetId.value })
-    console.log(budgetId.value);
     description.value = ""
     amount.value = ""
     budgetId.value = ""
     emit('closeModal');
+}
+
+function selectedOption(id) {
+    if (props.defaultBudget.id == id) {
+        return true
+    }
+    return false
 }
 </script>
 
@@ -41,19 +47,20 @@ function handleSubmit() {
                 </label>
                 <label>
                     Budget
-                    <select required v-model="budgetId" :id="UNCATEGORIZED_BUDGET_ID">
+                    <select required >
+                        <!-- v-model="budgetId" -->
                         <option
-                            :id="UNCATEGORIZED_BUDGET_ID"
                             :value="UNCATEGORIZED_BUDGET_ID"
-                            selected
+                            :selected="selectedOption(UNCATEGORIZED_BUDGET_ID)"
                         >
                             Uncategorized
                         </option>
                         <option
                             v-for="budget in budgets"
-                            :key="budget"
+                            :key="budget.id"
                             :id="budget.id"
                             :value="budget.id"
+                            :selected="selectedOption(budget.id)"
                         >
                             {{ budget.name }}
                         </option>

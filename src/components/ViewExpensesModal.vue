@@ -11,7 +11,7 @@ const emit = defineEmits(['closeModal'])
     <section>
         <form @submit.prevent="handleSubmit">
             <header>
-                <h2>New Budget</h2>
+                <h2>Expenses for</h2>
                 <h2 @click="$emit('closeModal')">&times;</h2>
             </header>
             <div>
