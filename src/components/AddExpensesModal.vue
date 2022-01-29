@@ -11,10 +11,11 @@ const emit = defineEmits(['closeModal'])
 
 const description = ref("")
 const amount = ref(0)
-const budgetId = ref("")
+const budgetId = props.defaultBudget.id
 
 function handleSubmit() {
-    addExpense({ description: description.value, amount: amount.value, budgetId: budgetId.value })
+    //console.log(document.getElementById("budgetId").value);
+    addExpense({ description: description.value, amount: amount.value, budgetId: document.getElementById("budgetId").value })
     description.value = ""
     amount.value = ""
     budgetId.value = ""
@@ -47,7 +48,7 @@ function selectedOption(id) {
                 </label>
                 <label>
                     Budget
-                    <select required >
+                    <select required id="budgetId">
                         <!-- v-model="budgetId" -->
                         <option
                             :value="UNCATEGORIZED_BUDGET_ID"

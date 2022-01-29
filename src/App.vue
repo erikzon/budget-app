@@ -13,7 +13,7 @@ const showBudgetModal = ref(false)
 const showExpensesModal = ref(false)
 const showViewExpensesModal = ref(false)
 const selectedBudget = ref({ id: UNCATEGORIZED_BUDGET_ID, name: "Uncategorized", max: 0 })
-
+const defaultBudgetObject = { id: UNCATEGORIZED_BUDGET_ID, name: "Uncategorized", max: 0 };
 onMounted(() => {
   //console.log(selectedBudget.value);
 })
@@ -35,7 +35,7 @@ function toggleViewExpensesModal() {
 }
 
 function getBudgetExpensesFor(budgetId) {
-  return getBudgetExpenses(budgetId).reduce((total, expense) => total + expense.amount,0)
+  return getBudgetExpenses(budgetId).reduce((total, expense) => total + expense.amount, 0)
 }
 
 function handleAddExpensesFromHeader() {
@@ -68,6 +68,7 @@ function amountAll() {
       :grey="false"
       :showButton="true"
       v-on:toggleExpensesModal="toggleExpensesModal"
+      v-on:toggleViewExpensesModal="toggleViewExpensesModal"
       v-on:budgetSelection="BudgetSelection(budget)"
     />
     <BudgetCard
@@ -78,10 +79,10 @@ function amountAll() {
       :grey="true"
       :showButton="true"
       v-on:toggleExpensesModal="toggleExpensesModal"
-      v-on:budgetSelection="BudgetSelection(budget)"
+      v-on:toggleViewExpensesModal="toggleViewExpensesModal"
+      v-on:budgetSelection="BudgetSelection(defaultBudgetObject)"
     />
     <BudgetCard
-      v-if="getBudgetExpensesFor(UNCATEGORIZED_BUDGET_ID) > 0"
       :key="123"
       name="Total"
       :amount="amountAll()"
@@ -96,7 +97,11 @@ function amountAll() {
     v-on:closeModal="toggleExpensesModal"
     :defaultBudget="selectedBudget"
   />
-  <ViewExpensesModal v-if="showViewExpensesModal" v-on:closeModal="toggleViewExpensesModal" :selectedBudget="selectedBudget"/>
+  <ViewExpensesModal
+    v-if="showViewExpensesModal"
+    v-on:closeModal="toggleViewExpensesModal"
+    :selectedBudget="selectedBudget"
+  />
 </template>
 
 <style>

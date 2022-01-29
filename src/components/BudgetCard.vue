@@ -9,7 +9,7 @@ defineProps({
     showButton: Boolean
 })
 
-const emit = defineEmits(['toggleExpensesModal','budgetSelection'])
+const emit = defineEmits(['toggleExpensesModal','budgetSelection', 'toggleViewExpensesModal'])
 
 function handleAddExpense() {
     emit('toggleExpensesModal')
@@ -17,6 +17,7 @@ function handleAddExpense() {
 }
 
 function handleViewExpenses() {
+    emit('toggleViewExpensesModal')
     emit('budgetSelection')
 }
 
