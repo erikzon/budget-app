@@ -6,10 +6,18 @@ const props = defineProps({
     selectedBudget: Object
 })
 
-const { getBudgetExpenses } = useBudgets()
+const { getBudgetExpenses, deleteExpense, deleteBudget } = useBudgets()
 
 const expenses = getBudgetExpenses(props.selectedBudget.id)
 const emit = defineEmits(['closeModal'])
+
+function handleDeleteExpense(id) {
+    deleteExpense(id)
+}
+
+function handleDeleteBudget(id) {
+    deleteBudget(id)
+}
 
 </script>
 
@@ -19,28 +27,17 @@ const emit = defineEmits(['closeModal'])
             <header>
                 <h2>Expenses for {{props.selectedBudget.name}}</h2>
                 <h2 @click="$emit('closeModal')">&times;</h2>
+                <button @click="deleteBudget(props.selectedBudget.id)" class="button">Delete this budget</button>
             </header>
             <div>
                 <ul>
                     <li v-for="expense in expenses" :key="expense.id" class="text-3xl">
                         {{expense.description}}
                         {{currencyFormatter.format(expense.amount)}}
-                        <span>&times;</span>
+                        <span @click="handleDeleteExpense(expense.id)">&times;</span>
                     </li>
                 </ul>
             </div>
-            <!-- <div>
-                <label>
-                    Name
-                    <input type="text" required v-model="name"/>
-                </label>
-                <label>
-                    Maximum Spending
-                    <input type="number" step="1" required v-model="max"/>
-                </label>
-                <button class="button primary" type="submit">Add</button>
-                 @click="$emit('closeModal')
-            </div> -->
         </form>
     </section>
 </template>

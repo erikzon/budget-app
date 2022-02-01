@@ -29,13 +29,13 @@ const useBudgets = () => {
         localStorage.setItem(BUDGETS_KEY, JSON.stringify(budgets.value))
     }
 
-    function deleteBudget({ id }) {
+    function deleteBudget(id) {
         // TODO; detail with expenses
         budgets.value = budgets.value.filter(budget => budget.id !== id)
         localStorage.setItem(BUDGETS_KEY, JSON.stringify(budgets.value))
     }
 
-    function deleteExpense({ id }) {
+    function deleteExpense( id ) {
         expenses.value = expenses.value.filter(expense => expense.id !== id)
         localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses.value))
     }
