@@ -5,7 +5,7 @@ const useBudgets = () => {
     const BUDGETS_KEY = "budgets-erick_oliva"
     const EXPENSES_KEY = "expenses-erick_oliva"
     const UNCATEGORIZED_BUDGET_ID = "Uncategorized"
-    
+
     const budgets = ref([])
     const expenses = ref([])
 
@@ -30,15 +30,13 @@ const useBudgets = () => {
     }
 
     function deleteBudget(id) {
-        console.log(expenses.value);
         expenses.value = expenses.value.filter(expense => expense.budgetId !== id)
-        console.log(expenses.value);
         budgets.value = budgets.value.filter(budget => budget.id !== id)
         localStorage.setItem(BUDGETS_KEY, JSON.stringify(budgets.value))
         localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses.value))
     }
 
-    function deleteExpense( id ) {
+    function deleteExpense(id) {
         expenses.value = expenses.value.filter(expense => expense.id !== id)
         localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses.value))
     }
