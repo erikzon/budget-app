@@ -1,16 +1,13 @@
 <script setup>
 import { ref } from 'vue';
-import useBudgets from "../contexts/useBudgets";
 
-const {addBudget} = useBudgets()
-
-const emit = defineEmits(['closeModal'])
+const emit = defineEmits(['closeModal','addBudget'])
 
 const name = ref("")
 const max = ref(0)
 
 function handleSubmit() {
-    addBudget({name: name.value,max: max.value})
+    emit('addBudget', {name: name.value,max: max.value});
     name.value = ""
     max.value = ""
     emit('closeModal');

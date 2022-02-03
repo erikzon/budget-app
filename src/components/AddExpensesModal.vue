@@ -2,20 +2,20 @@
 import { ref } from 'vue';
 import useBudgets from "../contexts/useBudgets";
 
-const { addExpense, budgets, UNCATEGORIZED_BUDGET_ID } = useBudgets()
+const { UNCATEGORIZED_BUDGET_ID } = useBudgets()
 
 const props = defineProps({
-    defaultBudget: Object
+    defaultBudget: Object,
+    budgets: Object
 })
-const emit = defineEmits(['closeModal'])
+const emit = defineEmits(['closeModal', 'addExpense'])
 
 const description = ref("")
 const amount = ref(0)
 const budgetId = props.defaultBudget.id
 
 function handleSubmit() {
-    //console.log(document.getElementById("budgetId").value);
-    addExpense({ description: description.value, amount: amount.value, budgetId: document.getElementById("budgetId").value })
+    emit('addExpense', { description: description.value, amount: amount.value, budgetId: document.getElementById("budgetId").value })
     description.value = ""
     amount.value = ""
     budgetId.value = ""
@@ -53,18 +53,14 @@ function selectedOption(id) {
                         <option
                             :value="UNCATEGORIZED_BUDGET_ID"
                             :selected="selectedOption(UNCATEGORIZED_BUDGET_ID)"
-                        >
-                            Uncategorized
-                        </option>
+                        >Uncategorized</option>
                         <option
                             v-for="budget in budgets"
                             :key="budget.id"
                             :id="budget.id"
                             :value="budget.id"
                             :selected="selectedOption(budget.id)"
-                        >
-                            {{ budget.name }}
-                        </option>
+                        >{{ budget.name }}</option>
                     </select>
                 </label>
                 <button class="button primary" type="submit">Add</button>

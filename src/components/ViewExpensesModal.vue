@@ -1,22 +1,22 @@
 <script setup>
+import { ref } from "vue";
 import useBudgets from "../contexts/useBudgets";
 import { currencyFormatter } from "../utils";
 
 const props = defineProps({
-    selectedBudget: Object
+    selectedBudget: Object,
+    budgetExpenses: Object
 })
 
-const { getBudgetExpenses, deleteExpense, deleteBudget } = useBudgets()
-
-const expenses = getBudgetExpenses(props.selectedBudget.id)
-const emit = defineEmits(['closeModal'])
+const emit = defineEmits(['closeModal','deleteExpense','deleteBudget'])
 
 function handleDeleteExpense(id) {
-    deleteExpense(id)
+    emit('deleteExpense', id)
 }
 
 function handleDeleteBudget(id) {
-    deleteBudget(id)
+    emit('deleteBudget', id)
+    emit('closeModal')
 }
 
 </script>
@@ -27,11 +27,13 @@ function handleDeleteBudget(id) {
             <header>
                 <h2>Expenses for {{props.selectedBudget.name}}</h2>
                 <h2 @click="$emit('closeModal')">&times;</h2>
-                <button @click="deleteBudget(props.selectedBudget.id)" class="button">Delete this budget</button>
+                <button
+                    v-if="props.selectedBudget.id !== 'Uncategorized'"
+                 @click="handleDeleteBudget(props.selectedBudget.id)" class="button">Delete this budget</button>
             </header>
             <div>
                 <ul>
-                    <li v-for="expense in expenses" :key="expense.id" class="text-3xl">
+                    <li v-for="expense in budgetExpenses" :key="expense.id" class="text-3xl">
                         {{expense.description}}
                         {{currencyFormatter.format(expense.amount)}}
                         <span @click="handleDeleteExpense(expense.id)">&times;</span>

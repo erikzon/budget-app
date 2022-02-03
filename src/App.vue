@@ -6,7 +6,7 @@ import useBudgets from "./contexts/useBudgets"
 import { onMounted, ref } from 'vue'
 import ViewExpensesModal from './components/ViewExpensesModal.vue'
 
-const { budgets, expenses, getBudgetExpenses, UNCATEGORIZED_BUDGET_ID } = useBudgets()
+const { budgets, expenses, getBudgetExpenses, UNCATEGORIZED_BUDGET_ID, addBudget, addExpense, deleteExpense, deleteBudget } = useBudgets()
 
 const defaultID = ref(UNCATEGORIZED_BUDGET_ID);
 const showBudgetModal = ref(false)
@@ -50,6 +50,27 @@ function maxAll() {
 function amountAll() {
   return expenses.value.reduce((total, expense) => total + expense.amount, 0)
 }
+
+function handleAddBudget(value) {
+  addBudget({name: value.name, max: value.max})
+}
+
+function handleAddExpense(value) {
+  addExpense({
+    description: value.description, 
+    amount: value.amount, 
+    budgetId: value.budgetId
+  })
+}
+
+function handleDeleteExpense(value) {
+  deleteExpense(value)
+}
+
+function handleDeleteBudget(value) {
+  deleteBudget(value)
+}
+
 </script>
 
 <template>
@@ -91,16 +112,25 @@ function amountAll() {
       :showButton="false"
     />
   </main>
-  <AddBudgetModal v-if="showBudgetModal" v-on:closeModal="toggleBudgetModal" />
+  <AddBudgetModal
+    v-if="showBudgetModal"
+    v-on:closeModal="toggleBudgetModal"
+    v-on:addBudget="handleAddBudget"
+  />
   <AddExpensesModal
     v-show="showExpensesModal"
     v-on:closeModal="toggleExpensesModal"
+    v-on:addExpense="handleAddExpense"
     :defaultBudget="selectedBudget"
+    :budgets = "budgets"
   />
   <ViewExpensesModal
     v-if="showViewExpensesModal"
     v-on:closeModal="toggleViewExpensesModal"
+    v-on:deleteExpense="handleDeleteExpense"
+    v-on:deleteBudget="handleDeleteBudget"
     :selectedBudget="selectedBudget"
+    :budgetExpenses="getBudgetExpenses(selectedBudget.id)"
   />
 </template>
 
